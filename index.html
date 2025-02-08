@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://selizkol.github.io/pano/lib/pannellum.css">
     <script src="https://selizkol.github.io/pano/lib/pannellum.js"></script>
     <style>
-        html, body {
+       html, body {
             margin: 0;
             padding: 0;
             width: 100%;
+            height: 100%;
+            overflow-y: auto; /* Включаем скроллинг внутри контейнера */
 
-            overflow-y: auto;
             font-family: Arial, sans-serif;
-            scrollbar-width: none; /* Скрыть прокрутку в Firefox */
         }
         /* Скрываем полосу прокрутки для всех браузеров */
         body::-webkit-scrollbar {
@@ -23,6 +23,7 @@
         body {
             -ms-overflow-style: none; /* IE и Edge */
             scrollbar-width: none; /* Firefox */
+
         }
         #panorama {
             display: none;
