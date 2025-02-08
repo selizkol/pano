@@ -11,13 +11,13 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-y: auto; /* Оставить рабочую прокрутку */
+            overflow-y: auto;
             font-family: Arial, sans-serif;
         }
         #panorama {
             width: 100%;
             height: 100%;
-            display: none; /* Скрываем панораму до выбора изображения */
+            display: none;
         }
         #menu {
             position: absolute;
@@ -29,21 +29,21 @@
             background: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
             width: 100%;
-            padding-top: 10px; /* Уменьшаем отступ сверху */
-            padding-bottom: 10px; /* Уменьшаем отступ снизу */
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
         #menu h1 {
-            font-size: 24px; /* Размер шрифта заголовка */
-            margin: 0; /* Убираем отступы вокруг заголовка */
-            padding: 0; /* Убираем внутренние отступы заголовка */
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
         }
         .panorama-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 2px;
             padding: 2px 2px;
-            max-height: 85vh; /* Ограничиваем высоту */
-            padding-bottom: 8px; /* Добавляем пространство снизу */
+            max-height: 85vh;
+            padding-bottom: 8px;
         }
         .panorama-item {
             display: flex;
@@ -59,15 +59,15 @@
             background: #e0e0e0;
         }
         .panorama-item img {
-            width: 100%; /* Ширина миниатюры */
-            height: 100%; /* Высота миниатюры */
+            width: 100%;
+            height: 100%;
             border-radius: 5px;
-            object-fit: cover; /* Чтобы изображение не искажалось */
+            object-fit: cover;
         }
         .panorama-item span {
-            font-size: 14px; /* Уменьшили размер текста */
+            font-size: 14px;
             color: #333;
-            margin-top: 5px; /* Отступ между изображением и текстом */
+            margin-top: 5px;
         }
         #exitButton {
             position: absolute;
@@ -101,79 +101,55 @@
     </style>
 </head>
 <body>
-    <!-- Кнопка выхода из панорамы -->
     <button id="exitButton" onclick="exitPanorama()">X</button>
-
-    <!-- Название панорамы -->
     <div id="panoramaTitle"></div>
-
-    <!-- Меню выбора панорамы -->
     <div id="menu">
-        <h1>Выберите панораму из 1-4</h1>
-        <div class="panorama-grid">
-            <!-- Элементы будут добавлены с помощью JavaScript -->
-        </div>
+        <h1>Выберите панораму 1-4</h1>
+        <div class="panorama-grid"></div>
     </div>
-
-    <!-- Контейнер для панорамы -->
     <div id="panorama"></div>
 
     <script>
         const baseUrl = "https://raw.githubusercontent.com/selizkol/pano/main/";
-        const panoramaCount = 4; // Количество панорам
+        const panoramaCount = 4; 
 
         const panoramaGrid = document.querySelector('.panorama-grid');
 
         for (let i = 1; i <= panoramaCount; i++) {
-            const imgNumber = i.toString().padStart(3, '0'); // Форматируем номер (001, 002 и т.д.)
+            const imgNumber = i.toString().padStart(3, '0');
             const imgUrl = `${baseUrl}pano_${imgNumber}.jpg`;
 
-            // Создаем элемент панорамы
             const panoramaItem = document.createElement('div');
             panoramaItem.className = 'panorama-item';
-
-            // Универсальный обработчик для кликов и касаний
             const handleClick = () => loadPanorama(`pano_${imgNumber}.jpg`, i);
+            panoramaItem.addEventListener('click', handleClick);
+            panoramaItem.addEventListener('touchend', handleClick);
 
-            // Обработчики для кликов и касаний
-            panoramaItem.addEventListener('click', handleClick); // Для ПК
-            panoramaItem.addEventListener('touchend', handleClick); // Для мобильных устройств
-
-            // Добавляем изображение
             const img = document.createElement('img');
             img.src = imgUrl;
             img.alt = `Панорама ${i}`;
 
-            // Добавляем текст
             const span = document.createElement('span');
             span.textContent = `Панорама ${i}`;
 
-            // Собираем элемент
             panoramaItem.appendChild(img);
             panoramaItem.appendChild(span);
-
-            // Добавляем в сетку
             panoramaGrid.appendChild(panoramaItem);
         }
 
         let viewer;
 
         function loadPanorama(image, index) {
-            // Сначала выйдем из текущей панорамы (если она есть)
             if (viewer) {
-                viewer.destroy(); // Уничтожим старую панораму
+                viewer.destroy();
             }
 
-            // Покажем новые элементы
             document.getElementById('menu').style.display = 'none';
             document.getElementById('panorama').style.display = 'block';
             document.getElementById('exitButton').style.display = 'block';
             document.getElementById('panoramaTitle').style.display = 'block';
-
-            // Установим заголовок для текущей панорамы
             document.getElementById('panoramaTitle').textContent = `Панорама ${index}`;
 
-            // Загружаем новую панораму
             viewer = pannellum.viewer('panorama', {
                 "type": "equirectangular",
                 "panorama": `${baseUrl}${image}`,
@@ -186,47 +162,46 @@
                         "pitch": 0,
                         "yaw": 0,
                         "type": "scene",
-                        "text": "Север",
-                        "sceneId": `pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`,
+                        "text": "Панорама 1",
+                        "sceneId": "pano_001.jpg",
                         "clickHandlerFunc": function() {
-                            loadPanorama(`pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`, (index % panoramaCount) + 1);
+                            loadPanorama("pano_001.jpg", 1);
                         }
                     },
                     {
                         "pitch": 0,
                         "yaw": 90,
                         "type": "scene",
-                        "text": "Восток",
-                        "sceneId": `pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`,
+                        "text": "Панорама 2",
+                        "sceneId": "pano_002.jpg",
                         "clickHandlerFunc": function() {
-                            loadPanorama(`pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`, (index % panoramaCount) + 1);
+                            loadPanorama("pano_002.jpg", 2);
                         }
                     },
                     {
                         "pitch": 0,
                         "yaw": 180,
                         "type": "scene",
-                        "text": "Юг",
-                        "sceneId": `pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`,
+                        "text": "Панорама 3",
+                        "sceneId": "pano_003.jpg",
                         "clickHandlerFunc": function() {
-                            loadPanorama(`pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`, (index % panoramaCount) + 1);
+                            loadPanorama("pano_003.jpg", 3);
                         }
                     },
                     {
                         "pitch": 0,
                         "yaw": -90,
                         "type": "scene",
-                        "text": "Запад",
-                        "sceneId": `pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`,
+                        "text": "Панорама 4",
+                        "sceneId": "pano_004.jpg",
                         "clickHandlerFunc": function() {
-                            loadPanorama(`pano_${(index % panoramaCount + 1).toString().padStart(3, '0')}.jpg`, (index % panoramaCount) + 1);
+                            loadPanorama("pano_004.jpg", 4);
                         }
                     }
                 ]
             });
         }
 
-        // Функция для выхода из панорамы
         function exitPanorama() {
             document.getElementById('menu').style.display = 'block';
             document.getElementById('panorama').style.display = 'none';
@@ -237,6 +212,5 @@
             }
         }
     </script>
-
 </body>
 </html>
