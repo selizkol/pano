@@ -14,7 +14,12 @@
             height: 100%;
             overflow-y: auto;
             font-family: Arial, sans-serif;
+            -ms-overflow-style: none; /* Скрыть прокрутку в IE и Edge */
             scrollbar-width: none; /* Скрыть прокрутку в Firefox */
+        }
+        /* Скрыть полосу прокрутки в WebKit-браузерах (Chrome, Safari) */
+        body::-webkit-scrollbar {
+            display: none;
         }
         #panorama {
             display: none;
@@ -26,7 +31,7 @@
             transform: translateX(-50%);
             text-align: center;
             z-index: 1000;
-            background: rgba(255, 0, 0, 0.8);
+            background: rgba(255, 0, 255, 0.8);
             border-radius: 5px;
             width: 100%;
             padding-top: 10px;
@@ -42,7 +47,7 @@
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 2px;
             padding: 2px 2px;
-            max-height: 85hv;
+            max-height: 85vh;
             padding-bottom: 8px;
         }
         .panorama-item {
