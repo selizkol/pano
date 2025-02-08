@@ -12,14 +12,16 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow-y: auto;
+            overflow: hidden; /* Убираем скроллинг на уровне body */
             font-family: Arial, sans-serif;
-            -ms-overflow-style: none; /* Скрыть прокрутку в IE и Edge */
-            scrollbar-width: none; /* Скрыть прокрутку в Firefox */
         }
-        /* Скрыть полосу прокрутки в WebKit-браузерах (Chrome, Safari) */
+        /* Скрываем полосу прокрутки для всех браузеров */
         body::-webkit-scrollbar {
-            display: none;
+            display: none; /* Chrome, Safari, Edge */
+        }
+        body {
+            -ms-overflow-style: none; /* IE и Edge */
+            scrollbar-width: none; /* Firefox */
         }
         #panorama {
             display: none;
@@ -31,7 +33,7 @@
             transform: translateX(-50%);
             text-align: center;
             z-index: 1000;
-            background: rgba(255, 0, 255, 0.8);
+            background: rgba(255, 0, 0, 0.8);
             border-radius: 5px;
             width: 100%;
             padding-top: 10px;
@@ -49,6 +51,15 @@
             padding: 2px 2px;
             max-height: 85vh;
             padding-bottom: 8px;
+            overflow-y: auto; /* Включаем скроллинг внутри контейнера */
+        }
+        /* Скрываем полосу прокрутки внутри контейнера */
+        .panorama-grid::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        .panorama-grid {
+            -ms-overflow-style: none; /* IE и Edge */
+            scrollbar-width: none; /* Firefox */
         }
         .panorama-item {
             display: flex;
