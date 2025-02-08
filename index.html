@@ -12,7 +12,6 @@
             padding: 0;
             height: 100%;
             overflow-y: auto; /* Оставить рабочую прокрутку */
-            scrollbar-width: none; /* Скрыть прокрутку в Firefox */
             font-family: Arial, sans-serif;
         }
         #panorama {
@@ -110,7 +109,7 @@
 
     <!-- Меню выбора панорамы -->
     <div id="menu">
-        <h1>Выберите панораму 1-4</h1>
+        <h1>Выберите панораму</h1>
         <div class="panorama-grid">
             <!-- Элементы будут добавлены с помощью JavaScript -->
         </div>
@@ -135,7 +134,7 @@
 
             // Универсальный обработчик для кликов и касаний
             const handleClick = () => loadPanorama(`pano_${imgNumber}.jpg`, i);
-            panoramaItem.addEventListener('pointerdown', handleClick); // Используем pointerdown для всех устройств
+            panoramaItem.addEventListener('click', handleClick); // Обработчик для обычных кликов
 
             // Добавляем изображение
             const img = document.createElement('img');
