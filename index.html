@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <style>
-        html, 
-    body {
+        html, body {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -62,7 +61,7 @@
         }
         .panorama-item img {
             width: 100%; /* Ширина миниатюры */
-            height:  100%; /* Высота миниатюры */
+            height: 100%; /* Высота миниатюры */
             border-radius: 5px;
             object-fit: cover; /* Чтобы изображение не искажалось */
         }
@@ -134,10 +133,9 @@
             const panoramaItem = document.createElement('div');
             panoramaItem.className = 'panorama-item';
 
-            // Универсальный обработчик для клика и касания
+            // Универсальный обработчик для кликов и касаний
             const handleClick = () => loadPanorama(`pano_${imgNumber}.jpg`, i);
-            panoramaItem.addEventListener('click', handleClick);
-            panoramaItem.addEventListener('touchstart', handleClick);
+            panoramaItem.addEventListener('pointerdown', handleClick); // Используем pointerdown для всех устройств
 
             // Добавляем изображение
             const img = document.createElement('img');
