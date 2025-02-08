@@ -109,7 +109,7 @@
 
     <!-- Меню выбора панорамы -->
     <div id="menu">
-        <h1>Выберите панораму 1-4</h1>
+        <h1>Выберите панораму из 1-4</h1>
         <div class="panorama-grid">
             <!-- Элементы будут добавлены с помощью JavaScript -->
         </div>
@@ -134,7 +134,10 @@
 
             // Универсальный обработчик для кликов и касаний
             const handleClick = () => loadPanorama(`pano_${imgNumber}.jpg`, i);
-            panoramaItem.addEventListener('click', handleClick); // Обработчик для обычных кликов
+
+            // Обработчики для кликов и касаний
+            panoramaItem.addEventListener('click', handleClick); // Для ПК
+            panoramaItem.addEventListener('touchend', handleClick); // Для мобильных устройств
 
             // Добавляем изображение
             const img = document.createElement('img');
