@@ -26,7 +26,7 @@
             transform: translateX(-50%);
             text-align: center;
             z-index: 1000;
-            background: rgba(255, 0, 255, 0.8);
+            background: rgba(255, 0, 0, 0.8);
             border-radius: 5px;
             width: 100%;
             padding-top: 10px;
@@ -122,26 +122,30 @@
             const panoramaItem = document.createElement('div');
             panoramaItem.className = 'panorama-item';
 
-            // Добавляем обработчик нажатия для мобильных и ПК
-            const handleClick = (event) => {
-                // Проверка на мобильное устройство (используется touch)
-                if (event.type === 'click' || event.type === 'touchend') {
+            let touchStartTime = 0;
+
+            // Обработчик начала касания
+            panoramaItem.addEventListener('touchstart', (event) => {
+                touchStartTime = Date.now();
+            });
+
+            // Обработчик окончания касания
+            panoramaItem.addEventListener('touchend', (event) => {
+                const touchEndTime = Date.now();
+                // Если касание было коротким (менее 200 мс), считаем это нажатием
+                if (touchEndTime - touchStartTime < 200) {
                     loadPanorama(`pano_${imgNumber}.jpg`, i);
                 }
-            };
+            });
 
-            // Обработчики событий для кликов и касаний
-            panoramaItem.addEventListener('click', handleClick);
-            panoramaItem.addEventListener('touchend', handleClick);
+            // Обработчик клика для ПК
+            panoramaItem.addEventListener('click', () => {
+                loadPanorama(`pano_${imgNumber}.jpg`, i);
+            });
 
             const img = document.createElement('img');
             img.src = imgUrl;
             img.alt = `Панорама ${i}`;
-
-            // Предотвращаем скроллинг только при касании на изображении
-            img.addEventListener('touchstart', (event) => {
-                event.preventDefault();
-            });
 
             const span = document.createElement('span');
             span.textContent = `Панорама ${i}`;
