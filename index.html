@@ -10,12 +10,11 @@
         html, body {
             margin: 0;
             padding: 0;
-	    width: 100%;
+            width: 100%;
             height: 100%;
             overflow-y: auto;
             font-family: Arial, sans-serif;
             scrollbar-width: none; /* Скрыть прокрутку в Firefox */
-
         }
         #panorama {
             display: none;
@@ -27,10 +26,9 @@
             transform: translateX(-50%);
             text-align: center;
             z-index: 1000;
-            background: rgba(255, 0, 0, 0.8);
+            background: rgba(255, 0, 255, 0.8);
             border-radius: 5px;
             width: 100%;
-
             padding-top: 10px;
             padding-bottom: 10px;
         }
@@ -46,7 +44,6 @@
             padding: 2px 2px;
             max-height: 85hv;
             padding-bottom: 8px;
-
         }
         .panorama-item {
             display: flex;
@@ -113,119 +110,123 @@
     <div id="panorama"></div>
 
     <script>
-const baseUrl = "https://raw.githubusercontent.com/selizkol/pano/main/";
-const panoramaCount = 4;
+        const baseUrl = "https://raw.githubusercontent.com/selizkol/pano/main/";
+        const panoramaCount = 4;
 
-const panoramaGrid = document.querySelector('.panorama-grid');
+        const panoramaGrid = document.querySelector('.panorama-grid');
 
-for (let i = 1; i <= panoramaCount; i++) {
-    const imgNumber = i.toString().padStart(3, '0');
-    const imgUrl = `${baseUrl}pano_${imgNumber}.jpg`;
+        for (let i = 1; i <= panoramaCount; i++) {
+            const imgNumber = i.toString().padStart(3, '0');
+            const imgUrl = `${baseUrl}pano_${imgNumber}.jpg`;
 
-    const panoramaItem = document.createElement('div');
-    panoramaItem.className = 'panorama-item';
+            const panoramaItem = document.createElement('div');
+            panoramaItem.className = 'panorama-item';
 
-    // Добавляем обработчик нажатия для мобильных и ПК
-    const handleClick = (event) => {
-        // Проверка на мобильное устройство (используется touch)
-        if (event.type === 'click' || event.type === 'touchend') {
-            loadPanorama(`pano_${imgNumber}.jpg`, i);
+            // Добавляем обработчик нажатия для мобильных и ПК
+            const handleClick = (event) => {
+                // Проверка на мобильное устройство (используется touch)
+                if (event.type === 'click' || event.type === 'touchend') {
+                    loadPanorama(`pano_${imgNumber}.jpg`, i);
+                }
+            };
+
+            // Обработчики событий для кликов и касаний
+            panoramaItem.addEventListener('click', handleClick);
+            panoramaItem.addEventListener('touchend', handleClick);
+
+            const img = document.createElement('img');
+            img.src = imgUrl;
+            img.alt = `Панорама ${i}`;
+
+            // Предотвращаем скроллинг только при касании на изображении
+            img.addEventListener('touchstart', (event) => {
+                event.preventDefault();
+            });
+
+            const span = document.createElement('span');
+            span.textContent = `Панорама ${i}`;
+
+            panoramaItem.appendChild(img);
+            panoramaItem.appendChild(span);
+            panoramaGrid.appendChild(panoramaItem);
         }
-    };
 
-    // Обработчики событий для кликов и касаний
-    panoramaItem.addEventListener('click', handleClick);
-    panoramaItem.addEventListener('touchend', handleClick);
+        let viewer;
 
-    const img = document.createElement('img');
-    img.src = imgUrl;
-    img.alt = `Панорама ${i}`;
-
-    const span = document.createElement('span');
-    span.textContent = `Панорама ${i}`;
-
-    panoramaItem.appendChild(img);
-    panoramaItem.appendChild(span);
-    panoramaGrid.appendChild(panoramaItem);
-}
-
-let viewer;
-
-function loadPanorama(image, index) {
-    // Сначала выйдем из текущей панорамы (если она есть)
-    if (viewer) {
-        viewer.destroy();
-    }
-
-    // Покажем новые элементы
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('panorama').style.display = 'block';
-    document.getElementById('exitButton').style.display = 'block';
-    document.getElementById('panoramaTitle').style.display = 'block';
-    document.getElementById('panoramaTitle').textContent = `Панорама ${index}`;
-
-    viewer = pannellum.viewer('panorama', {
-        "type": "equirectangular",
-        "panorama": `${baseUrl}${image}`,
-        "autoLoad": true,
-        "compass": true,
-        "showControls": true,
-        "mouseZoom": true,
-        "hotSpots": [
-            {
-                "pitch": 0,
-                "yaw": 0,
-                "type": "scene",
-                "text": "Панорама 1",
-                "sceneId": "pano_001.jpg",
-                "clickHandlerFunc": function() {
-                    loadPanorama("pano_001.jpg", 1);
-                }
-            },
-            {
-                "pitch": 0,
-                "yaw": 90,
-                "type": "scene",
-                "text": "Панорама 2",
-                "sceneId": "pano_002.jpg",
-                "clickHandlerFunc": function() {
-                    loadPanorama("pano_002.jpg", 2);
-                }
-            },
-            {
-                "pitch": 0,
-                "yaw": 180,
-                "type": "scene",
-                "text": "Панорама 3",
-                "sceneId": "pano_003.jpg",
-                "clickHandlerFunc": function() {
-                    loadPanorama("pano_003.jpg", 3);
-                }
-            },
-            {
-                "pitch": 0,
-                "yaw": -90,
-                "type": "scene",
-                "text": "Панорама 4",
-                "sceneId": "pano_004.jpg",
-                "clickHandlerFunc": function() {
-                    loadPanorama("pano_004.jpg", 4);
-                }
+        function loadPanorama(image, index) {
+            // Сначала выйдем из текущей панорамы (если она есть)
+            if (viewer) {
+                viewer.destroy();
             }
-        ]
-    });
-}
 
-function exitPanorama() {
-    document.getElementById('menu').style.display = 'block';
-    document.getElementById('panorama').style.display = 'none';
-    document.getElementById('exitButton').style.display = 'none';
-    document.getElementById('panoramaTitle').style.display = 'none';
-    if (viewer) {
-        viewer.destroy();
-    }
-}
+            // Покажем новые элементы
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('panorama').style.display = 'block';
+            document.getElementById('exitButton').style.display = 'block';
+            document.getElementById('panoramaTitle').style.display = 'block';
+            document.getElementById('panoramaTitle').textContent = `Панорама ${index}`;
 
+            viewer = pannellum.viewer('panorama', {
+                "type": "equirectangular",
+                "panorama": `${baseUrl}${image}`,
+                "autoLoad": true,
+                "compass": true,
+                "showControls": true,
+                "mouseZoom": true,
+                "hotSpots": [
+                    {
+                        "pitch": 0,
+                        "yaw": 0,
+                        "type": "scene",
+                        "text": "Панорама 1",
+                        "sceneId": "pano_001.jpg",
+                        "clickHandlerFunc": function() {
+                            loadPanorama("pano_001.jpg", 1);
+                        }
+                    },
+                    {
+                        "pitch": 0,
+                        "yaw": 90,
+                        "type": "scene",
+                        "text": "Панорама 2",
+                        "sceneId": "pano_002.jpg",
+                        "clickHandlerFunc": function() {
+                            loadPanorama("pano_002.jpg", 2);
+                        }
+                    },
+                    {
+                        "pitch": 0,
+                        "yaw": 180,
+                        "type": "scene",
+                        "text": "Панорама 3",
+                        "sceneId": "pano_003.jpg",
+                        "clickHandlerFunc": function() {
+                            loadPanorama("pano_003.jpg", 3);
+                        }
+                    },
+                    {
+                        "pitch": 0,
+                        "yaw": -90,
+                        "type": "scene",
+                        "text": "Панорама 4",
+                        "sceneId": "pano_004.jpg",
+                        "clickHandlerFunc": function() {
+                            loadPanorama("pano_004.jpg", 4);
+                        }
+                    }
+                ]
+            });
+        }
+
+        function exitPanorama() {
+            document.getElementById('menu').style.display = 'block';
+            document.getElementById('panorama').style.display = 'none';
+            document.getElementById('exitButton').style.display = 'none';
+            document.getElementById('panoramaTitle').style.display = 'none';
+            if (viewer) {
+                viewer.destroy();
+            }
+        }
     </script>
 </body>
 </html>
