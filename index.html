@@ -10,15 +10,14 @@
         html, body {
             margin: 0;
             padding: 0;
-	    width: 100%;
-            height: 100%;
             overflow-y: auto;
             font-family: Arial, sans-serif;
             scrollbar-width: none; /* Скрыть прокрутку в Firefox */
-
+	    width: 50%;
+            height: 100%;
         }
         #panorama {
-            width: 100%;
+            width: 50%;
             height: 100%;
             display: none;
         }
@@ -107,7 +106,7 @@
     <button id="exitButton" onclick="exitPanorama()">X</button>
     <div id="panoramaTitle"></div>
     <div id="menu">
-        <h1>Выберите панораму 1-4</h1>
+        <h1>Выберите панораму</h1>
         <div class="panorama-grid"></div>
     </div>
     <div id="panorama"></div>
